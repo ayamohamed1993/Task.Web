@@ -25,7 +25,12 @@ namespace Task.Web.Controllers
             if (convertedUser == null)
                 return BadRequest(new { Errors = "try to logout then login again" });
 
-            var applicationUser = _context.Users.Find(model.ToUser);
+
+            if(string.IsNullOrEmpty(model.PhoneNumber))
+                return BadRequest(new { Errors = "Please, Enter phone number you want to transfer to" });
+
+
+            var applicationUser = _context.Users.FirstOrDefault(item=>item.PhoneNumber.Equals(model.PhoneNumber));
             if (applicationUser == null)
                 return BadRequest(new { Errors = "The user you want to transfer to, not found" });
             else
@@ -39,7 +44,7 @@ namespace Task.Web.Controllers
                     balance = model.balance,
                     FromUser = model.FromUser,
                     Status = Status.Success,
-                    ToUser = model.ToUser,
+                    ToUser = Guid.Parse(applicationUser.Id),
                 };
                 _context.Transfer.Add(transfer);
                 _context.SaveChanges();

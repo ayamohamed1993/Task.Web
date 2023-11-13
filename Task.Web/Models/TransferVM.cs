@@ -3,7 +3,7 @@
     public class TransferVM
     {
         public Guid FromUser { get; set; }
-        public Guid ToUser { get; set; }
+        public string PhoneNumber { get; set; }
         public decimal balance { get; set; }
     }
 }
